@@ -1,15 +1,18 @@
 import React from "react";
 import avatar from "../assets/profile.png";
-import {Link} from "react-router-dom"
+import {Link,useNavigate} from "react-router-dom"
 import {useFormik} from 'formik';
 import {Toaster} from 'react-hot-toast';
 import {validatepassword} from "../helper/validate";
-
-
-
+import useFetch from '../hooks/fetch.hook';
+import { useAuthStore } from '../store/store'
 
 
 export default function Password() {
+
+  const navigate = useNavigate()
+  const { username } = useAuthStore(state => state.auth)
+  const [{ isLoading, apiData, serverError }] = useFetch(`/user/${username}`)
  
   const formik=useFormik({
        initialValues:
@@ -26,6 +29,8 @@ export default function Password() {
       
        
   })
+  if(isLoading) return <h1 className=''>isLoading</h1>;
+  if(serverError) return <h1 className=''>{serverError.message}</h1>
 
   return (
     <div>
@@ -33,7 +38,7 @@ export default function Password() {
      <div className="container-well mt-5 ">
       <div className="row justify-content-center  ">
       
-        <h3 className="col-2 mt-10">Hello Again</h3>
+        <h3 className="col-2 mt-10">Hello {apiData?.firstName || apiData?.username}</h3>
       </div>
       <div className="row justify-content-center">
         <p className="col-2.5">Explore more by connecting with us</p>
@@ -43,7 +48,7 @@ export default function Password() {
       <div class="col-md-2-sm-1  px-0">
         <img style={{height:200}}
           className="img-responsive "
-          src={avatar}
+          src={apiData?.profile || avatar}
           alt="proile"
         ></img>
         </div>
