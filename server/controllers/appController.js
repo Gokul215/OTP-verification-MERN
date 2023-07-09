@@ -3,8 +3,18 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js'
 import otpGenerator from 'otp-generator';
+import { error } from 'console';
 
 /** middleware for verify user */
+// try{
+//     UserModel.find().toArray((err, result) => {
+//         if (err) return console.error(err);
+//         if(result) return console.log(result);
+       
+//       });
+// }catch(error){
+//     console.log({ error })
+// }
 export async function verifyUser(req, res, next){
     try {
         
@@ -12,7 +22,8 @@ export async function verifyUser(req, res, next){
 
         // check the user existance
         let exist = await UserModel.findOne({ username });
-        if(!exist) return res.status(404).send({ error : "Can't find User!"});
+        //console.log(exist);
+        if(!exist) return res.status(404).send({ error : "Can't finds User!"});
         next();
 
     } catch (error) {

@@ -12,19 +12,22 @@ const options = {
 };
 const client=mongoose.connect(url, options)
 .then(() => {
+  
   console.log('Database connected successfully');
+ 
 
+  
   // Perform database operations here
 
   // Close the connection when you're done
-  mongoose.connection.close();
+ 
 })
 .catch((err) => {
   console.error('Error connecting to the database:', err);
 });
 return client;
 
-
+//mongodb connection using in-memory server
 
     // const mongod = await MongoMemoryServer.create();
     // const getUri = mongod.getUri();
