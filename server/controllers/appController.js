@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js'
 import otpGenerator from 'otp-generator';
+import { constants } from 'buffer';
+import { log } from 'console';
 
 
 /** middleware for verify user */
@@ -23,7 +25,7 @@ export async function verifyUser(req, res, next){
         // check the user existance
         let exist = await UserModel.findOne({ username });
         //console.log(exist);
-        if(!exist) return res.status(404).send({ error : "Can't finds User!"});
+        if(!exist) return res.status(404).send({ msg : "Can't finds User!"});
         next();
 
     } catch (error) {
@@ -50,33 +52,42 @@ export async function register(req,res){
         const { username, password, profile, email } = req.body;        
 
         // check the existing user
-        console.log("3")
-        
-        const existUsername = new Promise((resolve, reject) => {
-            UserModel.findOne({ username }, function(err, user){
-                if(err) reject(new Error(err))
-                if (user) reject(new Error("Please use a unique username."));
+      
 
+        UserModel.findOne({ username })
+        .then(user => {
+           if (user) {
+             throw { error: "Please use a unique username" };
+         }
+    // Continue with your logic here
+           })
+         .catch(err => {
+    // Handle the error
+           console.error(err);
+      });
 
-                resolve();
-            })
-        });
 
         // check for existing email
-        const existEmail = new Promise((resolve, reject) => {
-            UserModel.findOne({ email }, function(err, email){
-                if(err) reject(new Error(err))
-                if(email) reject({ error : "Please use unique Email"});
-  console.log("3",email)
-                resolve();
-            })
-        });
+     
+        UserModel.findOne({ email })
+                .then(email => {
+                    if (email) {
+                    throw { error: "Please use a unique email" };
+                    }
+                    // Continue with your logic here
+                })
+                .catch(err => {
+                    // Handle the error
+                    console.error(err);
+                });
 
 
-        Promise.all([existUsername, existEmail])
-            .then(() => {
+
+
+        // Promise.all([existUsername, existEmail])
+        //     .then(() => {
                 if(password){
-                    console.log(password)
+                   
                     bcrypt.hash(password, 10)
                         .then( hashedPassword => {
                             
@@ -86,10 +97,9 @@ export async function register(req,res){
                                 profile: profile || '',
                                 email
                             });
-                                   
+
                             // return save result as a response
                             user.save()
-                            console.log("user")
                                 .then(result => res.status(201).send({ msg: "User Register Successfully"}))
                                 .catch(error => res.status(500).send({error}))
 
@@ -99,9 +109,9 @@ export async function register(req,res){
                             })
                         })
                 }
-            }).catch(error => {
-                return res.status(500).send({ error })
-            })
+            // }).catch(error => {
+            //     return res.status(500).send({ error })
+            // })
 
 
     } catch (error) {
@@ -109,6 +119,7 @@ export async function register(req,res){
     }
 
 }
+    
 
 
 /** POST: http://localhost:8080/api/login 
@@ -161,7 +172,8 @@ export async function login(req,res){
 //64a7c37e3d1d048021ef6d2c
 export async function getUser(req,res){
     
-    const { username } = req.params;
+     const username = req.params.username;
+     console.log(username);
 
     try {
         

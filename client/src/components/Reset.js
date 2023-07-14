@@ -1,16 +1,18 @@
 import React from "react";
-
-
 import {useFormik} from 'formik';
-import {Toaster} from 'react-hot-toast';
+import toast, {Toaster} from 'react-hot-toast';
 import {resetpassword} from "../helper/validate";
-
-
-
+import { resetPassword } from '../helper/helper'
+import { useAuthStore } from '../store/store';
+import { useNavigate, Navigate } from 'react-router-dom';
+import useFetch from '../hooks/fetch.hook'
 
 
 export default function Reset() {
- 
+  const { username } = useAuthStore(state => state.auth);
+  const navigate = useNavigate();
+  const [{ isLoading,  status, serverError }] = useFetch('createResetSession')
+
   const formik=useFormik({
        initialValues:
        {
@@ -22,11 +24,21 @@ export default function Reset() {
        validate:resetpassword,
 
        onSubmit:async values=>{
-        console.log(values)
+        let resetPromise = resetPassword({ username, password: values.password })
+        toast.promise(resetPromise, {
+          loading: 'Updating...',
+          success: <b>Reset Successfully...!</b>,
+          error : <b>Could not Reset!</b>
+        });
+  
+        resetPromise.then(function(){ navigate('/password') })
        }
       
        
   })
+  if(isLoading) return <h1 className=''>isLoading</h1>;
+   if(serverError) return <h1 className=''>{serverError.message}</h1>
+   if(status && status !== 201) return <Navigate to={'/password'} replace={true}></Navigate>
 
   return (
     <div>

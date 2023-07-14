@@ -31,24 +31,21 @@ export default function Register() {
        onSubmit:async values=>{
         values = await Object.assign(values, { profile : file })
         console.log(values)
-        try{
-        let registerPromise = await registerUser(values)
-        toast.promise(registerPromise, {
+      
+        //let registerPromise = await registerUser(values)
+       
+        toast.promise(registerUser(values), {
           loading: 'Creating...',
           success : <b>Register Successfully...!</b>,
           error : <b>Could not Register.</b>
         })
-        registerPromise.then(function(){ navigate('/')})
+        .then(function(){ navigate('/')})
           .catch((err)=>{
             console.log("Error", err)
           });
          }
-      catch(error){
-       return toast.error("could not create user");
-      }
       
-      }
-    })
+      })
        
 
 
@@ -123,7 +120,7 @@ export default function Register() {
         </div>
         <div className="row justify-content-center ">
           
-          <input className="text  " style={{marginTop:10}} type="password" name="password" onChange={formik.handleChange} value={formik.values.password} placeholder="password" ></input>
+          <input className="text  " style={{marginTop:10}} type="password" name="password" autoComplete="false"  onChange={formik.handleChange} value={formik.values.password} placeholder="password" ></input>
          
         </div>
         <div  className="row justify-content-center  ">
