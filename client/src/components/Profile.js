@@ -1,41 +1,45 @@
 import React, { useState } from "react";
 import avatar from "../assets/profile.png";
-
-
 import {useFormik} from 'formik';
-import {Toaster} from 'react-hot-toast';
+import toast,{Toaster} from 'react-hot-toast';
 import {profileValidation} from "../helper/validate";
 import { useRef } from "react";
+import useFetch from '../hooks/fetch.hook';
+import { updateUser } from '../helper/helper'
+import { useNavigate } from 'react-router-dom'
+
 // import convert from "../helper/convert";
-
-
-
-
 
 export default function Profile() {
 
   const [file,setfile]=useState();
+  const [{ isLoading, apiData, serverError }] = useFetch();
+  const navigate = useNavigate()
   const image=useRef("");
  
-  const formik=useFormik({
-       initialValues:
-       {
-        email: '',
-        Firstname: '',
-        LastName:'',
-        mobile:'',
-        address: ''
-       }, 
-       validateOnBlur:false,
-       validateOnChange:false,
-       validate:profileValidation,
+  const formik = useFormik({
+    initialValues : {
+      firstName : apiData?.firstName || '',
+      lastName: apiData?.lastName || '',
+      email: apiData?.email || '',
+      mobile: apiData?.mobile || '',
+      address : apiData?.address || ''
+    },
+    enableReinitialize: true,
+    validate : profileValidation,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit : async values => {
+      values = await Object.assign(values, { profile : file || apiData?.profile || ''})
+      let updatePromise = updateUser(values);
 
-       onSubmit:async values=>{
-        values = await Object.assign(values, { profile : file })
-        console.log(values)
-       }
-      
-       
+      toast.promise(updatePromise, {
+        loading: 'Updating...',
+        success : <b>Update Successfully...!</b>,
+        error: <b>Could not Update!</b>
+      });
+
+    }
   })
 
 
@@ -61,6 +65,14 @@ export default function Profile() {
     image.current.click();
   }
 
+    // logout handler function
+    function userLogout(){
+      localStorage.removeItem('token');
+      navigate('/')
+    }
+    if(isLoading) return <h1 className='text-2xl font-bold'>isLoading</h1>;
+    if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>  
+
   return (
     <div>
      <Toaster position="top-center" reverseOrder={false}></Toaster>
@@ -84,7 +96,7 @@ export default function Profile() {
       
         <img style={{height:200}}
           className="img-responive "
-          src={file || avatar}
+          src={apiData?.profile || file || avatar}
            onClick={uploadphoto}
           
           alt="proile"
@@ -104,13 +116,13 @@ export default function Profile() {
         </div>
         <div className="row justify-content-center " onSubmit={formik.handleSubmit}>
         
-          <input className="text " style={{marginTop:10}} type="text" name="Firstname" onChange={formik.handleChange} value={formik.values.Firstname} placeholder="firstname" ></input>
+          <input className="text " style={{marginTop:10}} type="text" name="firstname" onChange={formik.handleChange} value={formik.values.firstname} placeholder="firstname" ></input>
          
 
         </div>
         <div className="row justify-content-center " onSubmit={formik.handleSubmit}>
         
-        <input className="text " style={{marginTop:10}} type="text" name="Lastname" onChange={formik.handleChange} value={formik.values.Lastname} placeholder="Lastname" ></input>
+        <input className="text " style={{marginTop:10}} type="text" name="lastname" onChange={formik.handleChange} value={formik.values.lastname} placeholder="Lastname" ></input>
        
 
       </div>
@@ -121,7 +133,7 @@ export default function Profile() {
         </div>
         <div className="row justify-content-center " onSubmit={formik.handleSubmit}>
         
-        <input className="text " style={{marginTop:10}} type="text" name="Address" onChange={formik.handleChange} value={formik.values.Address} placeholder="Address" ></input>
+        <input className="text " style={{marginTop:10}} type="text" name="address" onChange={formik.handleChange} value={formik.values.address} placeholder="Address" ></input>
        
 
       </div>
@@ -129,7 +141,7 @@ export default function Profile() {
           <button  type='submit' style={{marginTop:10}} onSubmit={formik.handleSubmit} className="btn btn-success">Update</button>
         </div>
         <div className="row justify-content-center  ">
-          <p style={{marginTop:"10px"}}>Come back later? <button className="btn" style={{color: "red"}}>Logout</button></p>
+          <p style={{marginTop:"10px"}}>Come back later? <button className="btn" onClick={userLogout} style={{color: "red"}}>Logout</button></p>
         </div>
       
         </form>

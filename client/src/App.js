@@ -8,6 +8,8 @@ import Reset from './components/Reset';
 import PageNotFound from './components/PageNotFound';
 import Profile from './components/Profile';
 
+import { AuthorizeUser, ProtectRoute } from './middleware/auth'
+
 const router=createBrowserRouter(
   [
     {
@@ -20,7 +22,7 @@ const router=createBrowserRouter(
     },
     {
       path:'/Profile',
-      element:<Profile></Profile>
+      element:<AuthorizeUser><Profile /></AuthorizeUser>
     },
     {
       path:'/Recovery',
@@ -28,7 +30,7 @@ const router=createBrowserRouter(
     },
     {
       path:'/Password',
-      element:<Password></Password>
+      element: <ProtectRoute><Password /></ProtectRoute>
     },
     {
       path:'/Reset',

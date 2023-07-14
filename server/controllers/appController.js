@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js'
 import otpGenerator from 'otp-generator';
-import { error } from 'console';
+
 
 /** middleware for verify user */
 // try{
@@ -50,10 +50,13 @@ export async function register(req,res){
         const { username, password, profile, email } = req.body;        
 
         // check the existing user
+        console.log("3")
+        
         const existUsername = new Promise((resolve, reject) => {
             UserModel.findOne({ username }, function(err, user){
                 if(err) reject(new Error(err))
-                if(user) reject({ error : "Please use unique username"});
+                if (user) reject(new Error("Please use a unique username."));
+
 
                 resolve();
             })
@@ -64,7 +67,7 @@ export async function register(req,res){
             UserModel.findOne({ email }, function(err, email){
                 if(err) reject(new Error(err))
                 if(email) reject({ error : "Please use unique Email"});
-
+  console.log("3",email)
                 resolve();
             })
         });
@@ -73,6 +76,7 @@ export async function register(req,res){
         Promise.all([existUsername, existEmail])
             .then(() => {
                 if(password){
+                    console.log(password)
                     bcrypt.hash(password, 10)
                         .then( hashedPassword => {
                             
@@ -82,9 +86,10 @@ export async function register(req,res){
                                 profile: profile || '',
                                 email
                             });
-
+                                   
                             // return save result as a response
                             user.save()
+                            console.log("user")
                                 .then(result => res.status(201).send({ msg: "User Register Successfully"}))
                                 .catch(error => res.status(500).send({error}))
 

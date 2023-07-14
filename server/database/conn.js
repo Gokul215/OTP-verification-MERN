@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 async function connect(){
     // mongoose.set('strictQuery', false);
-    const url = "mongodb+srv://gokul:4321@cluster0.7xmyt66.mongodb.net/db?retryWrites=true&w=majority"; // Replace with your MongoDB connection string
+    const url = "mongodb+srv://gokulbabu811:4321@cluster0.imznwfk.mongodb.net/db?retryWrites=true&w=majority"; // Replace with your MongoDB connection string
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

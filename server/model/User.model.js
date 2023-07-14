@@ -22,7 +22,7 @@ export const UserSchema = new mongoose.Schema({
     address: { type: String},
     profile: { type: String}
 });
-const UserModel=mongoose.model.Users || mongoose.model('User', UserSchema);
+const UserModel=mongoose.model.Users || mongoose.model('user', UserSchema);
 
     // try {
     //     const documents =  UserModel.find({});

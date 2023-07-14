@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import avatar from "../assets/profile.png";
 
-import {Link} from "react-router-dom"
+import {Link,useNavigate} from "react-router-dom"
 import {useFormik} from 'formik';
-import {Toaster} from 'react-hot-toast';
+import toast,{Toaster} from 'react-hot-toast';
 import {registerValidation} from "../helper/validate";
 import { useRef } from "react";
 // import convert from "../helper/convert";
-
+import { registerUser } from '../helper/helper'
 
 
 
 
 export default function Register() {
-
+  const navigate = useNavigate()
   const [file,setfile]=useState();
   const image=useRef("");
  
@@ -31,10 +31,25 @@ export default function Register() {
        onSubmit:async values=>{
         values = await Object.assign(values, { profile : file })
         console.log(values)
-       }
+        try{
+        let registerPromise = await registerUser(values)
+        toast.promise(registerPromise, {
+          loading: 'Creating...',
+          success : <b>Register Successfully...!</b>,
+          error : <b>Could not Register.</b>
+        })
+        registerPromise.then(function(){ navigate('/')})
+          .catch((err)=>{
+            console.log("Error", err)
+          });
+         }
+      catch(error){
+       return toast.error("could not create user");
+      }
       
+      }
+    })
        
-  })
 
 
   const  onUpload = async e =>{
@@ -95,18 +110,18 @@ export default function Register() {
         </div>
     
       </div>
-      <div className="row justify-content-center " onSubmit={formik.handleSubmit}>
+      <div className="row justify-content-center " >
           <input className="text  " style={{marginTop:10}} type="email" name="email" onChange={formik.handleChange} value={formik.values.email} placeholder="email" ></input>
         
           
         </div>
-        <div className="row justify-content-center " onSubmit={formik.handleSubmit}>
+        <div className="row justify-content-center " >
         
           <input className="text " style={{marginTop:10}} type="text" name="username" onChange={formik.handleChange} value={formik.values.username} placeholder="username" ></input>
          
 
         </div>
-        <div className="row justify-content-center " onSubmit={formik.handleSubmit}>
+        <div className="row justify-content-center ">
           
           <input className="text  " style={{marginTop:10}} type="password" name="password" onChange={formik.handleChange} value={formik.values.password} placeholder="password" ></input>
          
