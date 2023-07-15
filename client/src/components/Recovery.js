@@ -34,17 +34,17 @@ export default function Recovery() {
   // handler of resend OTP
   function resendOTP(){
 
-    let sentPromise = generateOTP(username);
+    //let sentPromise = generateOTP(username);
 
-    toast.promise(sentPromise ,
+    toast.promise( generateOTP(username) ,
       {
         loading: 'Sending...',
         success: <b>OTP has been send to your email!</b>,
         error: <b>Could not Send it!</b>,
       }
-    );
+    )
 
-    sentPromise.then((OTP) => {
+    .then((OTP) => {
       console.log(OTP)
     });
     

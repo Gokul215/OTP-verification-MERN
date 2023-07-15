@@ -24,7 +24,8 @@ export default function useFetch(query){
             //    const username  = !query ? await getUsername() :  await axios.get(`/api/${query}`).username;
                //const username=user.username;
                 //console.log(username,"2");
-                const username  = !query ? await getUsername() :'';
+                const {username } = !query ? await getUsername() :'';
+               // console.log(username,"2");
                 const { data, status } = !query ? await axios.get(`/api/user/${username}`) : await axios.get(`/api/${query}`);
 
                 if(status === 201){

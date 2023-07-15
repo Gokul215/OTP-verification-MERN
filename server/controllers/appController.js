@@ -172,8 +172,8 @@ export async function login(req,res){
 //64a7c37e3d1d048021ef6d2c
 export async function getUser(req,res){
     
-     const username = req.params.username;
-    // console.log(username,"3");
+    const { username } = req.params;
+    //console.log(username,"3");
 
     try {
         
@@ -231,17 +231,21 @@ export async function updateUser(req,res){
 
         if(userId){
             const body = req.body;
+            //console.log(body);
 
             // update the data
-            UserModel.updateOne({ _id : userId }, body, function(err, data){
-                if(err) throw err;
+            UserModel.updateOne({ _id : userId }, body) 
+            .then(result=>{
+                if(result) {
 
                 return res.status(201).send({ msg : "Record Updated...!"});
-            })
+                }
 
-        }else{
-            return res.status(401).send({ error : "User Not Found...!"});
-        }
+        
+    })  .catch(error => {
+        return res.status(401).send({ error : "User Not Found...!"});
+      })
+    }
 
     } catch (error) {
         return res.status(401).send({ error });
@@ -294,11 +298,14 @@ export async function resetPassword(req,res){
                     bcrypt.hash(password, 10)
                         .then(hashedPassword => {
                             UserModel.updateOne({ username : user.username },
-                            { password: hashedPassword}, function(err, data){
-                                if(err) throw err;
+                            { password: hashedPassword})
+                            .then(result=>{
+                                
                                 req.app.locals.resetSession = false; // reset session
                                 return res.status(201).send({ msg : "Record Updated...!"})
-                            });
+                            }).catch(err=>{
+                                       throw new Error(err)
+                            })
                         })
                         .catch( e => {
                             return res.status(500).send({

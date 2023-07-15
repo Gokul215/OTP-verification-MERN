@@ -16,6 +16,7 @@ export default function Profile() {
   const [{ isLoading, apiData, serverError }] = useFetch();
   const navigate = useNavigate()
   const image=useRef("");
+  //console.log(apiData,"a")
  
   const formik = useFormik({
     initialValues : {
@@ -30,10 +31,11 @@ export default function Profile() {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit : async values => {
+      //console.log(values,"value")
       values = await Object.assign(values, { profile : file || apiData?.profile || ''})
-      let updatePromise = updateUser(values);
+     // let updatePromise = updateUser(values);
 
-      toast.promise(updatePromise, {
+      toast.promise(updateUser(values), {
         loading: 'Updating...',
         success : <b>Update Successfully...!</b>,
         error: <b>Could not Update!</b>
@@ -116,13 +118,13 @@ export default function Profile() {
         </div>
         <div className="row justify-content-center " onSubmit={formik.handleSubmit}>
         
-          <input className="text " style={{marginTop:10}} type="text" name="firstname" onChange={formik.handleChange} value={formik.values.firstname} placeholder="firstname" ></input>
+          <input className="text " style={{marginTop:10}} type="text" name="firstName" onChange={formik.handleChange} value={formik.values.firstName} placeholder="firstname" ></input>
          
 
         </div>
         <div className="row justify-content-center " onSubmit={formik.handleSubmit}>
         
-        <input className="text " style={{marginTop:10}} type="text" name="lastname" onChange={formik.handleChange} value={formik.values.lastname} placeholder="Lastname" ></input>
+        <input className="text " style={{marginTop:10}} type="text" name="lastName" onChange={formik.handleChange} value={formik.values.lastName} placeholder="Lastname" ></input>
        
 
       </div>

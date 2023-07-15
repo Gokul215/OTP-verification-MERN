@@ -12,6 +12,7 @@ export async function getUsername(){
     const token = localStorage.getItem('token')
     if(!token) return Promise.reject("Cannot find Token");
     let decode = jwt_decode(token)
+    //console.log(decode);
     return decode;
 }
 
@@ -26,7 +27,7 @@ export async function authenticate(username){
 
 /** get User details */
 export async function getUser({ username }){
-    console.log(username);
+    console.log(username,"2");
     try {
         const { data } = await axios.get(`/api/user/${username}`);
         return { data };
