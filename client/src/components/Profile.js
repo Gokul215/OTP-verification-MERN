@@ -7,6 +7,7 @@ import { useRef } from "react";
 import useFetch from '../hooks/fetch.hook';
 import { updateUser } from '../helper/helper'
 import { useNavigate } from 'react-router-dom'
+import {Vortex} from 'react-loader-spinner'
 
 // import convert from "../helper/convert";
 
@@ -72,8 +73,19 @@ export default function Profile() {
       localStorage.removeItem('token');
       navigate('/')
     }
-    if(isLoading) return <h1 className='text-2xl font-bold'>isLoading</h1>;
-    if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>  
+    if(isLoading) {
+      return ( <div className="row justify-content-center">
+      <Vortex
+    visible={true}
+    height="80"
+    width="80"
+    ariaLabel="vortex-loading"
+    wrapperStyle={{}}
+    wrapperClass="vortex-wrapper"
+    colors={['red', 'green', 'blue', 'purple']}
+  />
+  </div>)}
+     if(serverError) return <h1 className='row justify-content-center text-danger'>{serverError.message}</h1>
 
   return (
     <div>

@@ -27,7 +27,7 @@ export async function authenticate(username){
 
 /** get User details */
 export async function getUser({ username }){
-    console.log(username,"2");
+    //console.log(username,"2");
     try {
         const { data } = await axios.get(`/api/user/${username}`);
         return { data };
@@ -91,8 +91,10 @@ export async function generateOTP(username){
             let { data : { email }} = await getUser({ username });
             let text = `Your Password Recovery OTP is ${code}. Verify and recover your password.`;
             await axios.post('/api/registerMail', { username, userEmail: email, text, subject : "Password Recovery OTP"})
+           // return Promise.resolve(code);
         }
         return Promise.resolve(code);
+        
     } catch (error) {
         return Promise.reject({ error });
     }

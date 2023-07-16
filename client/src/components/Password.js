@@ -7,6 +7,7 @@ import {validatepassword} from "../helper/validate";
 import useFetch from '../hooks/fetch.hook';
 import { useAuthStore } from '../store/store'
 import { verifyPassword } from '../helper/helper'
+import {Vortex} from 'react-loader-spinner'
 
 export default function Password() {
 
@@ -39,9 +40,21 @@ export default function Password() {
         })
       }
        })
-  if(isLoading) return <h1 className=''>isLoading</h1>;
-   if(serverError) return <h1 className=''>{serverError.message}</h1>
-
+     
+  if(isLoading) {
+    return ( <div className="row justify-content-center">
+    <Vortex
+  visible={true}
+  height="80"
+  width="80"
+  ariaLabel="vortex-loading"
+  wrapperStyle={{}}
+  wrapperClass="vortex-wrapper"
+  colors={['red', 'green', 'blue', 'purple']}
+/>
+</div>)}
+   if(serverError) return <h1 className='row justify-content-center text-danger'>{serverError.message}</h1>
+ 
   return (
     <div>
      <Toaster position="top-center" reverseOrder={false}></Toaster>

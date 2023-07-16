@@ -3,8 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js'
 import otpGenerator from 'otp-generator';
-import { constants } from 'buffer';
-import { log } from 'console';
+
 
 
 /** middleware for verify user */

@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 // import { MongoMemoryServer } from "mongodb-memory-server";
-// import ENV from '../config.js'
+import ENV from '../config.js'
 
 async function connect(){
     // mongoose.set('strictQuery', false);
-    const url = "mongodb+srv://gokulbabu811:4321@cluster0.imznwfk.mongodb.net/db?retryWrites=true&w=majority"; // Replace with your MongoDB connection string
+    const url = ENV.URI;// Replace with your MongoDB connection string
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

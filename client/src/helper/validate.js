@@ -63,7 +63,7 @@ export async function resetpassword(values){
   const errors= verifypassword({},values)
 
   if (values.password!== values.confpassword){
-      toast.error('Confirm password does not match')
+    errors.password= toast.error('Confirm password does not match')
   }
   return errors;
 }
