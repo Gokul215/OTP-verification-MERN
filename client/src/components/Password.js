@@ -61,7 +61,7 @@ export default function Password() {
      <div className="container-well mt-5 ">
       <div className="row justify-content-center  ">
       
-        <h3 className="col-2 mt-10">Hello {apiData?.firstName || apiData?.username}</h3>
+        <h3 className="col-4 mt-3">Hello {apiData?.firstName || apiData?.username}</h3>
       </div>
       <div className="row justify-content-center">
         <p className="col-2.5">Explore more by connecting with us</p>

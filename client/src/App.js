@@ -7,6 +7,7 @@ import Password from './components/Password';
 import Reset from './components/Reset';
 import PageNotFound from './components/PageNotFound';
 import Profile from './components/Profile';
+import  './index.css'
 
 import { AuthorizeUser, ProtectRoute } from './middleware/auth'
 
@@ -45,7 +46,7 @@ const router=createBrowserRouter(
 function App() {
   return (
   
-   <div>
+   <div className='card'>
     <RouterProvider router={router}></RouterProvider>
    </div>
   );

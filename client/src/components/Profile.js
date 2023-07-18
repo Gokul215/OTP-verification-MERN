@@ -35,6 +35,7 @@ export default function Profile() {
       //console.log(values,"value")
       values = await Object.assign(values, { profile : file || apiData?.profile || ''})
      // let updatePromise = updateUser(values);
+     console.log(values)
 
       toast.promise(updateUser(values), {
         loading: 'Updating...',
@@ -90,7 +91,7 @@ export default function Profile() {
   return (
     <div>
      <Toaster position="top-center" reverseOrder={false}></Toaster>
-     <div className="container-well mt-5 ">
+     <div className="container-well 10 ">
       <div className="row justify-content-center  "> 
       
         <h3 className="col-1.5 mt-10">Profile</h3>
