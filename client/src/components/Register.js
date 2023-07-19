@@ -16,6 +16,7 @@ export default function Register() {
   const navigate = useNavigate()
   const [file,setfile]=useState();
   const image=useRef("");
+  const [error, setError] = useState('');
  
   const formik=useFormik({
        initialValues:
@@ -30,21 +31,60 @@ export default function Register() {
 
        onSubmit:async values=>{
         values = await Object.assign(values, { profile : file })
-       // console.log(values)
-      
-        //let registerPromise = await registerUser(values)
-       
-        toast.promise(registerUser(values), {
+       //console.log(values)
+       var message
+       try {
         
-          loading: 'Creating...',
-          success : <b>Register Successfully...!</b>,
-          error : <b>Could not Register.</b>
-        })
-        .then(function(){ navigate('/')})
-          .catch((err)=>{
-            console.log("Error", err)
-          });
-         }
+         message= await registerUser(values)
+         console.log(message);
+      
+          toast.success("Register Successfully...!")
+        
+         
+         setTimeout(() => {
+          navigate('/')
+         }, 3000);
+          
+       }
+       catch (err) {
+        console.log(err);
+      setError(err);
+      toast.error(error)
+      }
+
+
+
+       // await toast.success("Register Successfully...!")
+      //   console.log(message);
+      //   toast.promise(message, {
+      //     loading:"Creating..",
+      //    success : <b>Register Successfully...!</b>,
+        
+      //    error:error
+      //  })
+      //  .then(function(){ navigate('/')})
+      //    .catch((err)=>{
+      //      console.log( err)
+      //    });
+     
+    
+       
+      }
+       
+        // toast.promise(registerUser(values), {
+          
+        
+        //   loading: 'Creating...',
+        //   success : <b>Register Successfully...!</b>,
+        //  // error:<b>Could not register</b>
+        //  // error : <b>{registerPromise.error}</b>
+        //   error:error
+        // })
+        // .then(function(){ navigate('/')})
+        //   .catch((err)=>{
+        //     console.log( err)
+        //   });
+         
       
       })
        

@@ -1,4 +1,5 @@
 import axios from 'axios';
+//import { error } from 'console';
 import jwt_decode from 'jwt-decode';
 
 axios.defaults.baseURL = 'http://localhost:8080';
@@ -41,18 +42,30 @@ export async function registerUser(credentials){
    // console.log(credentials)
     try {
         
-        const { data : { msg }, status } = await axios.post('/api/register', credentials);
-        
-        let { username, email } = credentials;
+        const  response = await axios.post('/api/register', credentials);
+        console.log(response);
+        console.log(response.data.msg);
+        console.log(response.data.error);
 
+        let { username, email } = credentials;
+        if (response.status === 200) {
+            return Promise.reject (response.data.error);
+          }
+        //  if(status === 409){
+        //     console.log(error)
+        //     throw new Error(error)
+        //  }
         /** send email */
-         if(status === 201){
-           await axios.post('/api/registerMail', { username, userEmail : email, text : msg})
+         if(response.status === 201){
+           await axios.post('/api/registerMail', { username, userEmail : email, text :response.data.msg})
+           return Promise.resolve(response.data)
          }
 
-        return Promise.resolve(msg)
+         //return Promise.resolve(response.data);
     } catch (error) {
-        return Promise.reject({ error })
+       console.log( Error(error));
+       // throw (error);
+        return Promise.reject( error )
     }
 }
 

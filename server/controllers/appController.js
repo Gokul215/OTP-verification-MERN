@@ -64,37 +64,58 @@ export async function verifyUser(req, res, next){
 export async function register(req,res){
 
     try {
-        const { username, password, profile, email } = req.body;        
-
+        const { username, password, profile, email } = req.body;
+        console.log("1");
+        const existingUser = await UserModel.findOne({
+            $or: [
+              { username },
+              { email }
+            ]
+          })
+          
+          if (existingUser) {
+            if (existingUser.username === username) {
+                console.log("2");
+              // Username already exists
+              return res.status(200).json({ error: 'Username already exists' });
+            }
+            console.log("3");
+            // Email already exists
+            return res.status(200).json({ error: 'Email already exists' });
+          }
+          
         // check the existing user
       
 
-        UserModel.findOne({ username })
-        .then(user => {
-           if (user) {
-             throw { error: "Please use a unique username" };
-         }
-    // Continue with your logic here
-           })
-         .catch(err => {
-    // Handle the error
-           console.error(err);
-      });
+    //     UserModel.findOne({ username })
+    //     .then(user => {
+    //        if (user) {
+    //          throw { error: "Please use a unique username" };
+    //        //return res.status(409).json({ message: 'User already exists' });
+            
+    //      }
+    // // Continue with your logic here
+    //        })
+    //      .catch(err => {
+    // // Handle the error
+    //        console.error(err);
+    //       // res.status(500).json({ message: 'Error occurred while checking user existence' });
+    //   });
 
 
         // check for existing email
      
-        UserModel.findOne({ email })
-                .then(email => {
-                    if (email) {
-                    throw { error: "Please use a unique email" };
-                    }
-                    // Continue with your logic here
-                })
-                .catch(err => {
-                    // Handle the error
-                    console.error(err);
-                });
+        // UserModel.findOne({ email })
+        //         .then(email => {
+        //             if (email) {
+        //             throw { error: "Please use a unique email" };
+        //             }
+        //             // Continue with your logic here
+        //         })
+        //         .catch(err => {
+        //             // Handle the error
+        //             console.error(err);
+        //         });
 
 
 

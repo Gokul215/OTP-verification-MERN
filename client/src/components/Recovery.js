@@ -117,9 +117,9 @@ export default function Recovery() {
     ).then((OTP) => {
       console.log(OTP);
       setTimer(30); // Replace '10' with your desired starting time in seconds
-      console.log(timerRef.current,timerRef)
+      
       timerRef.current = setInterval(() => {
-        console.log(timerRef.current,timerRef)
+       
         setTimer(prevTimer => {
           if (prevTimer === 0) {
             clearInterval(timerRef.current);
