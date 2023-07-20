@@ -58,7 +58,7 @@ export default function Reset() {
      <div className="container-well mt-4 ">
       <div className="row justify-content-center  ">
       
-        <h3 className="col-6 mt-10">Reset your password</h3>
+        <h3 className="col-6-md-4 mt-10">Reset your password</h3>
       </div>
       <div className="row justify-content-center">
        

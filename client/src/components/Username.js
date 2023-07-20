@@ -31,7 +31,7 @@ export default function Username() {
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div className="container-well mt-5 ">
         <div className="row justify-content-center">
-          <h3 className="col-4 mt-10">Hello Again</h3>
+          <h3 className="col-4-md-4 mt-10">Hello Again</h3>
         </div>
         <div className="row justify-content-center">
           <p className="col-2.5">Explore more by connecting with us</p>

@@ -142,7 +142,7 @@ export default function Recovery() {
           <h3 className="col-2.5 ">Recovery</h3>
         </div>
         <div className="row justify-content-center">
-          <p className="col-4">Enter OTP to recovery</p>
+          <p className="col-4-md-4">Enter OTP to recovery</p>
         </div>
 
         <div className="row justify-content-center ">

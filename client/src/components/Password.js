@@ -61,7 +61,7 @@ export default function Password() {
      <div className="container-well mt-5 ">
       <div className="row justify-content-center  ">
       
-        <h3 className="col-4 mt-3">Hello {apiData?.firstName || apiData?.username}</h3>
+        <h3 className="col-4-md-4 mt-3">Hello {apiData?.firstName || apiData?.username}</h3>
       </div>
       <div className="row justify-content-center">
         <p className="col-2.5">Explore more by connecting with us</p>
@@ -79,7 +79,7 @@ export default function Password() {
       </div>
       <form onSubmit={formik.handleSubmit}>
       <div className="row justify-content-center " onSubmit={formik.handleSubmit}>
-          <input className="text" style={{marginTop:10}} type="text" name="password" onChange={formik.handleChange} value={formik.values.password} placeholder="password" ></input>
+          <input className="text" style={{marginTop:10}} type="password" name="password" onChange={formik.handleChange} value={formik.values.password} placeholder="password" ></input>
 
         </div>
         <div  className="row justify-content-center  ">
