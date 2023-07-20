@@ -2,7 +2,7 @@ import axios from 'axios';
 //import { error } from 'console';
 import jwt_decode from 'jwt-decode';
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'https://registration-system-otp-verification.onrender.com';
 
 
 /** Make API Requests */
